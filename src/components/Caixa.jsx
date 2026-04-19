@@ -19,6 +19,7 @@ const Caixa = () => {
         setIsdesabled(false)// habilita o botão
     }, 2000);
   }
+  console.log("RENDERIZOU")
 
   return (// aparencia -> tamanho/espaçamento -> layout/estrutura
     <div className="bg-[#313a49] font-principal font-extrabold rounded-2xl w-[90%] lg:w-130 max-lg:landscape:w-[60%] p-7 py-16 relative">
