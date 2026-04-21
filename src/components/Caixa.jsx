@@ -1,6 +1,7 @@
-import { useMediaQuery } from "@mui/material";
+import { duration, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import useSWR from "swr";
+import { AnimatePresence, motion } from "motion/react";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -25,10 +26,12 @@ const Caixa = () => {
     <div className="bg-[#313a49] font-principal font-extrabold rounded-2xl w-[90%] lg:w-130 max-lg:landscape:w-[60%] p-7 py-16 relative">
       <div className="flex flex-col gap-y-7 items-center justify-center text-center">
         <span className="text-[#53ffab] text-[14px] tracking-[3px]">ADVICE #{isLoading ? "?" : data?.slip?.id}</span>
-        {error 
-            ? <p className="text-red-600">erro in request data</p> 
-            : <p className="text-gray-300 ">{isLoading ? "Loading..." : `"${data?.slip?.advice}"`}</p>
-        }
+        <AnimatePresence mode="wait">
+          {isLoading
+              ? <p className="text-gray-200">Loading...</p>
+              : <motion.p  key={data.slip.id} initial={{ scale: 0 , opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }} className="text-gray-300">"{data?.slip?.advice}"</motion.p>
+          }
+        </AnimatePresence>
         <div>
           <img src={isMobile
                 ? "/advice-generatorApp/images/pattern-divider-mobile.svg"
@@ -39,9 +42,9 @@ const Caixa = () => {
           />
         </div>
       </div>
-      <button disabled={isDesabled} onClick={() => reRequest()} className="shadow-[#53ffab] disabled:hover:shadow-none disabled:cursor-not-allowed disabled:bg-[#53ffab]/60 shadow-none hover:shadow-[0px_0px_40px_3px] cursor-pointer rounded-full w-17 h-17 bg-[#53ffab] -bottom-18 left-1/2 -translate-1/2 absolute flex items-center justify-center">
+      <motion.button whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.1 }} disabled={isDesabled} onClick={() => reRequest()} className="shadow-[#53ffab] disabled:hover:shadow-none disabled:cursor-not-allowed disabled:bg-[#53ffab]/60 shadow-none transition-shadow duration-500 hover:shadow-[0px_0px_40px_3px] cursor-pointer rounded-full w-17 h-17 bg-[#53ffab] -bottom-18 left-1/2 -translate-1/2 absolute flex items-center justify-center">
         <img src="/advice-generatorApp/images/icon-dice.svg" alt="icon dice" className="bg-[#53ffab] select-none h-auto" />
-      </button>
+      </motion.button>
     </div>
   );
 };
